@@ -20,7 +20,7 @@ contract DocumentManagement{
 
     //Eventos
     event DocumentAdded(bytes32 indexed documentId, address indexed owner, string name);
-
+    event DocumentGiven(bytes32 indexed documentId, address indexed owner, address indexed givenTo);
     
 
     function addDocument(string memory _ipfsHash, string memory _name) public returns (bytes32){
@@ -36,6 +36,16 @@ contract DocumentManagement{
         emit DocumentAdded(documentId, msg.sender, _name);
         return documentId;
     }
+
+    function giveDocument(bytes32 _documentId, address _user) public{
+        require(documents[_documentId].owner == msg.sender, "Only ther owner can share the document");
+        require(_user != address(0), "Invalid user address");
+
+        documents[_documentId].authorizedUsers[_user] = true;
+        userDocuments[_user].push(_documentId);
+    }
+
+
 
     function getDocument(bytes32 _documentId) public view returns (string memory, address, string memory){
         Document storage doc = documents[_documentId];
