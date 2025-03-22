@@ -1,12 +1,10 @@
 const AvalancheService = {
     web3: null,
-    contract: null,
-    contractAddress: '',
     
     async initialize() {
-      // Check if MetaMask is installed
+      // Esto verifica si tienes una wallet instalada
       if (window.ethereum) {
-          // Request account access
+          // Pide acceso a la cuenta
           await window.ethereum.request({ method: 'eth_requestAccounts' });
           this.web3 = new Web3(window.ethereum);
           return true;
@@ -19,14 +17,14 @@ const AvalancheService = {
                 method: 'wallet_addEthereumChain',
                 params: [{
                     chainId: '0xA869', // 43113 en hexadecimal (Fuji Testnet)
-                    chainName: 'Avalanche Fuji C-Chain', // Nombre de la red
+                    chainName: 'Avalanche Fuji C-Chain', 
                     nativeCurrency: {
-                        name: 'AVAX', // Nombre de la moneda nativa
-                        symbol: 'AVAX', // Símbolo de la moneda nativa
-                        decimals: 18 // Decimales de la moneda nativa
+                        name: 'AVAX', 
+                        symbol: 'AVAX', 
+                        decimals: 18 
                     },
-                    rpcUrls: ['https://api.avax-test.network/ext/bc/C/rpc'], // URL del RPC de Fuji
-                    blockExplorerUrls: ['https://testnet.snowtrace.io/'] // URL del explorador de bloques
+                    rpcUrls: ['https://api.avax-test.network/ext/bc/C/rpc'], 
+                    blockExplorerUrls: ['https://testnet.snowtrace.io/'],
                 }],
             });
             console.log('Cambiado a Avalanche Fuji Testnet');
@@ -40,4 +38,6 @@ const AvalancheService = {
       const accounts = await this.web3.eth.getAccounts();
       return accounts[0];
     },
+
+
 }
