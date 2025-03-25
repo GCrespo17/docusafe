@@ -10,7 +10,6 @@ if(typeof window.ethereum !== 'undefined'){
 connectButton.addEventListener('click', async ()=>{
 
     const avalancheInitialized = await AvalancheService.initialize();
-    const ipfsInitialized = await IPFSService.initialize();
 
     const account= await AvalancheService.getCurrentAccount();
     console.log(account);
@@ -60,12 +59,15 @@ function showAllDocuments(listId, documents){
 
         const name=document.createElement('h3');
         name.textContent=doc.name;
+        const cid=document.createElement('p');
+        cid.textContent=`CID: ${doc.ipfsHash}`;
         const url = document.createElement('a');
         url.href = documentUrl;
         url.textContent = 'View Document';
         url.target = '_blank'; // Abrir en una nueva pestaña
 
         li.appendChild(name);
+        li.appendChild(cid);
         li.appendChild(url);
 
         list.appendChild(li);
