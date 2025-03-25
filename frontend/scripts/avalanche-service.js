@@ -10,7 +10,7 @@ const AvalancheService = {
           await window.ethereum.request({ method: 'eth_requestAccounts' });
           this.web3 = new Web3(window.ethereum);
 
-          const contractABI = await fetch('../contractABI/DocumentManagement.json').then(response => response.json())
+          const contractABI = await fetch('/contractABI/DocumentManagement.json').then(response => response.json())
           .then(data => data.abi);
 
           this.contract = new this.web3.eth.Contract(contractABI, this.contractAddress);
@@ -76,5 +76,10 @@ const AvalancheService = {
         const account = await this.getCurrentAccount();
         const docIds = await this.contract.methods.getAllDocuments().call({from: account});
         return this.getDocumentsDetails(docIds, account);
-    }
+   },
+
+   async shareDocument(docId, address){
+    const account = await this.getCurrentAccount();
+    return this.contract.methods.giveDocument(docId, address).send({from: account});
+   }
 }
