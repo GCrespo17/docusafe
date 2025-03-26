@@ -1,7 +1,7 @@
 const AvalancheService = {
     web3: null,
     contract: null,
-    contractAddress: '0x5098d4453246E1fbe8e62259DF3579A0661c6BB0',
+    contractAddress: '0x440f9Aea882Df2806192dA8Adb4Fe14748BAf15F',
     
     async initialize() {
       // Esto verifica si tienes una wallet instalada
@@ -78,32 +78,35 @@ const AvalancheService = {
         return this.getDocumentsDetails(docIds, account);
    },
 
-  //  async shareDocument(docId, address){
-  //   const account = await this.getCurrentAccount();
-  //   const bytes32DocId = web3.utils.keccak256(docId);
-  //   return this.contract.methods.giveDocument(bytes32DocId, address).send({from: account});
-  //  }
-
-  async shareDocument(documentId, receiver) {
+   async shareDocument(ipfsCid, address) {
     try {
+        const account = await this.getCurrentAccount();
+        
 
-      const tx = await contract.methods.giveDocument(documentId, receiver)
-        .send({ from: account });
-  
-      console.log('Transacción exitosa:', tx);
-      alert('Documento compartido exitosamente');
-  
+        if (typeof ipfsCid !== 'string') {
+            throw new Error("El CID debe ser un string");
+        }
+        const checksumAddress = this.web3.utils.toChecksumAddress(address);
+        
+        console.log("Enviando transacción con:", {
+            ipfsCid: ipfsCid,
+            address: checksumAddress,
+            account: account
+        });
+
+        const tx = await this.contract.methods.giveDocument(ipfsCid, checksumAddress).send({from: account });
+
+        console.log("Transacción exitosa:", tx.transactionHash);
+        return tx;
+
     } catch (error) {
-      console.error('Error detallado:', error);
-      
-      // Mensajes de error más específicos
-      if (error.code === 4001) {
-        alert('Transacción cancelada por el usuario');
-      } else if (error.message.includes('User denied')) {
-        alert('Permiso denegado');
-      } else {
-        alert(`Error al compartir documento: ${error.message}`);
-      }
+        console.error(" Error completo:", {
+            message: error.message,
+            data: error.data,
+            stack: error.stack
+        });
+        throw new Error(`Error al compartir: ${error.message}`);
     }
-  }
+}
+
 }
