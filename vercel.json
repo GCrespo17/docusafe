@@ -12,6 +12,10 @@
       "dest": "/frontend/$1/$2"
     },
     {
+      "src": "/(.*\\.json)",
+      "dest": "/frontend/$1"
+    },
+    {
       "src": "/(.*)",
       "dest": "/frontend/index.html"
     }
