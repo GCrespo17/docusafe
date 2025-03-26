@@ -37,12 +37,12 @@ contract DocumentManagement{
         return documentId;
     }
 
-    function giveDocument(bytes32 _documentId, address _user) public{
-        require(documents[_documentId].owner == msg.sender, "Only ther owner can share the document");
+    function giveDocument(string memory _docId, address _user) public{
+        bytes32 _documentId = keccak256(abi.encodePacked(_docId));
         require(_user != address(0), "Invalid user address");
-
         documents[_documentId].authorizedUsers[_user] = true;
         userDocuments[_user].push(_documentId);
+        emit DocumentGiven(_documentId, msg.sender, _user);
     }
 
 

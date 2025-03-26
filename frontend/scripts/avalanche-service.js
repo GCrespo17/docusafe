@@ -1,7 +1,7 @@
 const AvalancheService = {
     web3: null,
     contract: null,
-    contractAddress: '0xe3a99bA3ae8C645C97f49793254f081eD327d01D',
+    contractAddress: '0x440f9Aea882Df2806192dA8Adb4Fe14748BAf15F',
     
     async initialize() {
       // Esto verifica si tienes una wallet instalada
@@ -78,8 +78,35 @@ const AvalancheService = {
         return this.getDocumentsDetails(docIds, account);
    },
 
-   async shareDocument(docId, address){
-    const account = await this.getCurrentAccount();
-    return this.contract.methods.giveDocument(docId, address).send({from: account});
-   }
+   async shareDocument(ipfsCid, address) {
+    try {
+        const account = await this.getCurrentAccount();
+        
+
+        if (typeof ipfsCid !== 'string') {
+            throw new Error("El CID debe ser un string");
+        }
+        const checksumAddress = this.web3.utils.toChecksumAddress(address);
+        
+        console.log("Enviando transacción con:", {
+            ipfsCid: ipfsCid,
+            address: checksumAddress,
+            account: account
+        });
+
+        const tx = await this.contract.methods.giveDocument(ipfsCid, checksumAddress).send({from: account });
+
+        console.log("Transacción exitosa:", tx.transactionHash);
+        return tx;
+
+    } catch (error) {
+        console.error(" Error completo:", {
+            message: error.message,
+            data: error.data,
+            stack: error.stack
+        });
+        throw new Error(`Error al compartir: ${error.message}`);
+    }
+}
+
 }

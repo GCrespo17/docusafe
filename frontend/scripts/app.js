@@ -81,6 +81,7 @@ async function loadDocuments(){
 }
 
 async function shareDocument(){
+    event.preventDefault();
     const documentId = document.getElementById('document-cid').value;
     const receiver = document.getElementById('share-address').value;
 
@@ -89,6 +90,7 @@ async function shareDocument(){
         alert('Document shared successfully');
     }catch(error){
         console.error('Error sharing document', error);
+        console.log(error);
         alert('Error sharing document');
     }
 }
