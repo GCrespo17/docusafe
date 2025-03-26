@@ -2,14 +2,14 @@
   "version": 2,
   "builds": [
     {
-      "src": "frontend/**/*", 
+      "src": "frontend/**/*",
       "use": "@vercel/static"
     }
   ],
   "routes": [
     {
-      "src": "/scripts/(.*)",
-      "dest": "/frontend/scripts/$1"
+      "src": "/(scripts|assets|abis)/(.*)",
+      "dest": "/frontend/$1/$2"
     },
     {
       "src": "/(.*)",
