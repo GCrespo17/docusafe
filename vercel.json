@@ -8,7 +8,7 @@
   ],
   "routes": [
     {
-      "src": "/(scripts|assets|abis)/(.*)",
+      "src": "/(scripts|assets|abis|styles)/(.*)",
       "dest": "/frontend/$1/$2"
     },
     {
