@@ -43,6 +43,7 @@ contract DocumentManagement{
 
         documents[_documentId].authorizedUsers[_user] = true;
         userDocuments[_user].push(_documentId);
+        emit DocumentGiven(_documentId, msg.sender, _user);
     }
 
 
