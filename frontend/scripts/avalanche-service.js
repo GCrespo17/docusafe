@@ -1,7 +1,7 @@
 const AvalancheService = {
     web3: null,
     contract: null,
-    contractAddress: '0xe3a99bA3ae8C645C97f49793254f081eD327d01D',
+    contractAddress: '0x5098d4453246E1fbe8e62259DF3579A0661c6BB0',
     
     async initialize() {
       // Esto verifica si tienes una wallet instalada
@@ -78,8 +78,32 @@ const AvalancheService = {
         return this.getDocumentsDetails(docIds, account);
    },
 
-   async shareDocument(docId, address){
-    const account = await this.getCurrentAccount();
-    return this.contract.methods.giveDocument(docId, address).send({from: account});
-   }
+  //  async shareDocument(docId, address){
+  //   const account = await this.getCurrentAccount();
+  //   const bytes32DocId = web3.utils.keccak256(docId);
+  //   return this.contract.methods.giveDocument(bytes32DocId, address).send({from: account});
+  //  }
+
+  async shareDocument(documentId, receiver) {
+    try {
+
+      const tx = await contract.methods.giveDocument(documentId, receiver)
+        .send({ from: account });
+  
+      console.log('Transacción exitosa:', tx);
+      alert('Documento compartido exitosamente');
+  
+    } catch (error) {
+      console.error('Error detallado:', error);
+      
+      // Mensajes de error más específicos
+      if (error.code === 4001) {
+        alert('Transacción cancelada por el usuario');
+      } else if (error.message.includes('User denied')) {
+        alert('Permiso denegado');
+      } else {
+        alert(`Error al compartir documento: ${error.message}`);
+      }
+    }
+  }
 }
