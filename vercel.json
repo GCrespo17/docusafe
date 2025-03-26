@@ -2,14 +2,14 @@
   "version": 2,
   "builds": [
     {
-      "src": "frontend/index.html",
+      "src": "frontend/**/*", 
       "use": "@vercel/static"
     }
   ],
   "routes": [
     {
-      "src": "/static/(.*)",
-      "headers": { "Cache-Control": "public, max-age=31536000, immutable" }
+      "src": "/scripts/(.*)",
+      "dest": "/frontend/scripts/$1"
     },
     {
       "src": "/(.*)",
