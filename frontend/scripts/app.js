@@ -80,5 +80,19 @@ async function loadDocuments(){
     showAllDocuments('document-list', documents)
 }
 
+async function shareDocument(){
+    const documentId = document.getElementById('document-cid').value;
+    const receiver = document.getElementById('share-address').value;
+
+    try{
+        await AvalancheService.shareDocument(documentId, receiver);
+        alert('Document shared successfully');
+    }catch(error){
+        console.error('Error sharing document', error);
+        alert('Error sharing document');
+    }
+}
+
 document.getElementById('upload-form').addEventListener('submit', uploadDocument);
 document.getElementById('refresh-btn').addEventListener('click', loadDocuments);
+document.getElementById('share-form').addEventListener('submit', shareDocument);
