@@ -1,7 +1,7 @@
 const AvalancheService = {
     web3: null,
     contract: null,
-    contractAddress: '0x440f9Aea882Df2806192dA8Adb4Fe14748BAf15F',
+    contractAddress: '0x5E16893b88CB26F135976455970692Fa5CeB9E98',
     
     async initialize() {
       // Esto verifica si tienes una wallet instalada
