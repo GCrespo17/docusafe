@@ -38,8 +38,9 @@ contract DocumentManagement{
     }
 
     function giveDocument(string memory _docId, address _user) public{
-        bytes32 _documentId = keccak256(abi.encodePacked(_docId));
+        bytes32 _documentId = keccak256(abi.encodePacked(_docId, msg.sender));
         require(_user != address(0), "Invalid user address");
+        require(documents[_documentId].owner == msg.sender, "No eres el dueno");
         documents[_documentId].authorizedUsers[_user] = true;
         userDocuments[_user].push(_documentId);
         emit DocumentGiven(_documentId, msg.sender, _user);
